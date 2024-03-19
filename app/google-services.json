@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "937725290349",
+    "firebase_url": "https://library-x-dbbcb-default-rtdb.firebaseio.com",
+    "project_id": "library-x-dbbcb",
+    "storage_bucket": "library-x-dbbcb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937725290349:android:465352dd2e52f0edea5c64",
+        "android_client_info": {
+          "package_name": "com.example.library_x"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7wfkRoP3GF5v-sHAAVN1RbsJaSMtLugk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

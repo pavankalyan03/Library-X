@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="24dp"
+        android:minHeight="70dp"
+        android:elevation="10dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:id="@+id/itemTv"
+                    android:layout_width="300dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center"
+                    android:text="Book"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    />
+
+            <ImageView
+                    android:id="@+id/arrow_imageview"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/arrow_down"
+                    android:layout_alignParentEnd="true"
+                    />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/expandable_layout">
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/child_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
