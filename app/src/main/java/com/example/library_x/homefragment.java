@@ -27,7 +27,7 @@ public class homefragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Datamodel> mList;
     private ItemAdapter adapter;
-    String link;
+    String link,fdetails,fbookname;
 
     String[] books = {"Book Name: Bhagavad Gita \n\nAuthor name: Vedavyasa",
             "Book Name: The Alchemist \n\nAuthor name: Paulo Coelho",
@@ -59,46 +59,35 @@ public class homefragment extends Fragment {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-        DatabaseReference databaseReference = firebaseDatabase.getReference();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("images");
 
-        DatabaseReference getImage = databaseReference.child("images/secret");
+//        DatabaseReference getImage = databaseReference.child("secret");
 
-        getImage.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(
-                            @NonNull DataSnapshot dataSnapshot)
-                    {
-                        // getting a DataSnapshot for the
-                        // location at the specified relative
-                        // path and getting in the link variable
-                        link = dataSnapshot.getValue(String.class);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Data exists, log its value
+                    link = dataSnapshot.child("secret").getValue(String.class);
+                    fdetails = dataSnapshot.child("details").getValue(String.class);
+                    fbookname = dataSnapshot.child("Bookname").getValue(String.class);
+                    mList.add(new Datamodel(fdetails, link, fbookname));
+                    adapter = new ItemAdapter(mList);
+                    recyclerView.setAdapter(adapter);
 
-                        // loading that data into rImage
-                        // variable which is ImageView
-//                        Picasso.get().load(link).into(rImage);
-                    }
+                } else {
+                    Log.d("FirebaseData", "No data found at the specified location");
+                }
+            }
 
-                    // this will called when any problem
-                    // occurs in getting data
-                    @Override
-                    public void onCancelled(
-                            @NonNull DatabaseError databaseError)
-                    {
-                        // we are showing that error message in
-                        // toast
-                        Toast
-                                .makeText(getContext(),
-                                        "Error Loading Image",
-                                        Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle onCancelled
+                Log.e("FirebaseData", "Error: " + databaseError.getMessage());
+            }
+        });
 
-        mList.add(new Datamodel("details",link, "The Secret"));
 
-        adapter = new ItemAdapter(mList);
-        recyclerView.setAdapter(adapter);
 
         return view;
     }
