@@ -31,7 +31,7 @@ public class nestedAdapter extends RecyclerView.Adapter<nestedAdapter.nestedView
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull nestedViewHolder holder, int position) {
-        holder.mtv.setText(image);
+        holder.mtv.setText(details);
 //        holder.mImageView.setImageResource(image);
         Picasso.get().load(image).into(holder.mImageView);
 
