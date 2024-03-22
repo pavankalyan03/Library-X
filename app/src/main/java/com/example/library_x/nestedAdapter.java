@@ -13,11 +13,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class nestedAdapter extends RecyclerView.Adapter<nestedAdapter.nestedViewHolder> {
 
-    private final String details;
+    private final String details,duedate,publishdate;
     private final String image;
 
-    public nestedAdapter(String details, String image) {
+    public nestedAdapter(String details,String duedate,String publishdate, String image) {
         this.details = details;
+        this.duedate = duedate;
+        this.publishdate = publishdate;
         this.image = image;
     }
 
@@ -31,7 +33,9 @@ public class nestedAdapter extends RecyclerView.Adapter<nestedAdapter.nestedView
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull nestedViewHolder holder, int position) {
-        holder.mtv.setText(details);
+        holder.bookname.setText(details);
+        holder.due.setText(duedate);
+        holder.publish.setText(publishdate);
 //        holder.mImageView.setImageResource(image);
         Picasso.get().load(image).into(holder.mImageView);
 
@@ -44,13 +48,15 @@ public class nestedAdapter extends RecyclerView.Adapter<nestedAdapter.nestedView
 
     public static class nestedViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView mtv;
+        private final TextView bookname,due,publish;
         private final ImageView mImageView;
 
         public nestedViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
-            mtv = itemView.findViewById(R.id.nestedItemTv);
+            bookname = itemView.findViewById(R.id.bookname);
+            due = itemView.findViewById(R.id.due);
+            publish = itemView.findViewById(R.id.publish);
             mImageView = itemView.findViewById(R.id.imageView);
         }
     }

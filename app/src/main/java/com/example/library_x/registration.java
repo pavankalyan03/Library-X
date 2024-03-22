@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
@@ -100,13 +102,19 @@ public class registration extends AppCompatActivity {
 
                 if (a==5)
                 {
-                    ArrayListHolder.username.add(aemail);
-                    ArrayListHolder.fullname.add(afname);
-                    ArrayListHolder.surname.add(asname);
-                    ArrayListHolder.phoneno.add(aphoneno);
-                    ArrayListHolder.password.add(apassword);
-                    ArrayListHolder.dateofbirth.add(adob);
+//                    ArrayListHolder.username.add(aemail);
+//                    ArrayListHolder.fullname.add(afname);
+//                    ArrayListHolder.surname.add(asname);
+//                    ArrayListHolder.phoneno.add(aphoneno);
+//                    ArrayListHolder.password.add(apassword);
+//                    ArrayListHolder.dateofbirth.add(adob);
 
+                    String books = " ";
+                    HelperClass helperClass = new HelperClass(afname,aemail,apassword,books,adob);
+
+                    FirebaseDatabase.getInstance().getReference().child("users").child("afname").setValue(helperClass);
+
+                    Toast.makeText(registration.this, "Registration Is successful", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(registration.this,MainActivity.class);
                     startActivity(intent);
                     finish();

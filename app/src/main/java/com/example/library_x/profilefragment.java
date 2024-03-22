@@ -25,15 +25,18 @@ public class profilefragment extends Fragment {
         pdob = view.findViewById(R.id.profiledob);
         puname = view.findViewById(R.id.profileusername);
 
-        int index = ArrayListHolder.username.indexOf(ArrayListHolder.current);
+//        int index = ArrayListHolder.username.indexOf(ArrayListHolder.current);
+//
+//        puname.setText(ArrayListHolder.username.get(index));
+//        pfname.setText(ArrayListHolder.fullname.get(index));
+//        psname.setText(ArrayListHolder.surname.get(index));
+//        pdob.setText(ArrayListHolder.dateofbirth.get(index));
+//        ppno.setText(ArrayListHolder.phoneno.get(index));
 
-        puname.setText(ArrayListHolder.username.get(index));
-        pfname.setText(ArrayListHolder.fullname.get(index));
-        psname.setText(ArrayListHolder.surname.get(index));
-        pdob.setText(ArrayListHolder.dateofbirth.get(index));
-        ppno.setText(ArrayListHolder.phoneno.get(index));
-
-
+        assert getArguments() != null;
+        puname.setText(getArguments().getString("username"));
+        pfname.setText(getArguments().getString("name"));
+        pdob.setText(getArguments().getString("dob"));
 
         return view;
     }

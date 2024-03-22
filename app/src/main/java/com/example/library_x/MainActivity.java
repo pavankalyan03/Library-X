@@ -3,11 +3,13 @@ package com.example.library_x;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.database.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -110,29 +112,10 @@ public class MainActivity extends AppCompatActivity {
         mlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputlogin = memail.getText().toString();
-                String inputpassword = mpassword.getText().toString();
+                if (!validateUsername() | !validatePassword()) {
 
-                int index = ArrayListHolder.username.indexOf(inputlogin);
-                if (index == -1)
-                {
-                    memail.setError("Invalid username");
-                }
-                else
-                {
-                    if (!inputpassword.equals(ArrayListHolder.password.get(index))) {
-                        mpassword.setError("Wrong password");
-                    }
-                    else
-                    {
-                        // Password is correct, proceed with login
-                        // You can add your logic here, such as starting a new activity
-                        ArrayListHolder.current=inputlogin;
-                        Toast.makeText(MainActivity.this,"Login Sucessful",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(MainActivity.this,navigation.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                } else {
+                    checkUser();
                 }
             }
         });
@@ -147,4 +130,84 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    public Boolean validateUsername() {
+        String val = mlogin.getText().toString();
+        if (val.isEmpty()) {
+            mlogin.setError("Username cannot be empty");
+            return false;
+        } else {
+            mlogin.setError(null);
+            return true;
+        }
+    }
+
+    public Boolean validatePassword(){
+        String val = mlogin.getText().toString();
+        if (val.isEmpty()) {
+            mlogin.setError("Password cannot be empty");
+            return false;
+        } else {
+            mlogin.setError(null);
+            return true;
+        }
+    }
+
+    public void checkUser(){
+        String userUsername = memail.getText().toString();
+        String userPassword = mpassword.getText().toString();
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users");
+        Query checkUserDatabase = reference.orderByChild("username").equalTo(userUsername);
+
+        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()) {
+
+                    mlogin.setError(null);
+                    String passwordFromDB = snapshot.child(userUsername).child("password").getValue(String.class);
+
+                    if (passwordFromDB.equals(userPassword)) {
+                        mlogin.setError(null);
+
+
+                        String dobFromDB = snapshot.child(userUsername).child("dob").getValue(String.class);
+                        String emailFromDB = snapshot.child(userUsername).child("email").getValue(String.class);
+                        String usernameFromDB = snapshot.child(userUsername).child("username").getValue(String.class);
+                        String nameFromDB = snapshot.child(userUsername).child("name").getValue(String.class);
+
+
+                        Intent intent = new Intent(MainActivity.this, navigation.class);
+
+                        intent.putExtra("username",usernameFromDB);
+                        intent.putExtra("email",emailFromDB);
+                        intent.putExtra("password",passwordFromDB);
+                        intent.putExtra("dob",dobFromDB);
+                        intent.putExtra("name",nameFromDB);
+
+
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        mlogin.setError("Invalid Credentials");
+                        mlogin.requestFocus();
+                    }
+                } else {
+                    mlogin.setError("User does not exist");
+                    mlogin.requestFocus();
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }

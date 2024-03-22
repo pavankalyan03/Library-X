@@ -27,14 +27,14 @@ public class homefragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Datamodel> mList;
     private ItemAdapter adapter;
-    String link,fdetails,fbookname;
+    String link,fdetails,fdue,fpublish;
 
-    String[] books = {"Book Name: Bhagavad Gita \n\nAuthor name: Vedavyasa",
-            "Book Name: The Alchemist \n\nAuthor name: Paulo Coelho",
-            "Book Name: The Power of Your Subconscious Mind \n\nAuthor name: Joseph Murphy",
-            "Book Name: The Secret \n\nAuthor name: Rhonda Byrne",
-            "Book Name: The 5 AM Club \n\nAuthor name: Robin Sharma",
-            "Book Name: Atomic Habits \n\nAuthor name: Jamnes clear"};
+//    String[] books = {"Book Name: Bhagavad Gita \n\nAuthor name: Vedavyasa",
+//            "Book Name: The Alchemist \n\nAuthor name: Paulo Coelho",
+//            "Book Name: The Power of Your Subconscious Mind \n\nAuthor name: Joseph Murphy",
+//            "Book Name: The Secret \n\nAuthor name: Rhonda Byrne",
+//            "Book Name: The 5 AM Club \n\nAuthor name: Robin Sharma",
+//            "Book Name: Atomic Habits \n\nAuthor name: Jamnes clear"};
 
 //    int[] images = {R.drawable.bhagadvadgita, R.drawable.alchemist, R.drawable.powerofmind, R.drawable.secret, R.drawable.amclub, R.drawable.atomichabits};
 
@@ -50,23 +50,20 @@ public class homefragment extends Fragment {
 
         mList = new ArrayList<>();
 
-//        mList.add(new Datamodel(books[0],images[0], "Bhagavad Gita"));
-//        mList.add(new Datamodel(books[1],images[1], "The Alchemist"));
-//        mList.add(new Datamodel(books[2],images[2], "The Power of Your Subconscious Mind"));
-//        mList.add(new Datamodel(books[3],images[3], "The Secret"));
-//        mList.add(new Datamodel(books[4],images[4], "The 5 AM Club"));
-//        mList.add(new Datamodel(books[5],images[5], "Atomic Habits"));
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
+        String Userusername = getArguments().getString("username");
+        Query checkUserDatabase = reference.orderByChild("username").equalTo(Userusername);
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-
-        DatabaseReference databaseReference = firebaseDatabase.getReference("images");
-
-//        DatabaseReference getImage = databaseReference.child("secret");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        checkUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DatabaseReference books = FirebaseDatabase.getInstance().getReference().child("Userusername/Books");
                 if (dataSnapshot.exists()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String key = snapshot.getKey();
+                        Log.d("FirebaseData", "Key: " + key);
+                    }
                     // Data exists, log its value
                     link = dataSnapshot.child("secret").getValue(String.class);
                     fdetails = dataSnapshot.child("details").getValue(String.class);
@@ -86,9 +83,7 @@ public class homefragment extends Fragment {
                 Log.e("FirebaseData", "Error: " + databaseError.getMessage());
             }
         });
-
-
-
+        
         return view;
     }
 
