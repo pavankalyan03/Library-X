@@ -7,7 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="70dp"
-        app:cardElevation="10dp"
+        android:backgroundTint="@color/pink"
+        app:cardElevation="20dp"
+        app:cardCornerRadius="24dp"
         app:cardUseCompatPadding="true"
         android:layout_margin="8dp">
     <LinearLayout
@@ -35,7 +37,7 @@
         <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 app:cardCornerRadius="24dp"
-                android:backgroundTint="@color/blue"
+                android:backgroundTint="@color/white_200"
                 android:layout_height="match_parent">
 
             <TextView

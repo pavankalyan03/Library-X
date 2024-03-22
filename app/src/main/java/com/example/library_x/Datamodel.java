@@ -2,20 +2,17 @@ package com.example.library_x;
 
 public class Datamodel {
 
-    private String details, itemText;
+    private String itemText,duedate,publishdate;
     String image;
     private boolean isExpandable;
 
 
-    public Datamodel(String details,String image, String itemText) {
-        this.details = details;
+    public Datamodel(String duedate,String publishdate,String image, String itemText) {
+        this.duedate = duedate;
+        this.publishdate = publishdate;
         this.image = image;
         this.itemText = itemText;
         isExpandable = false;
-    }
-
-    public String getDetails() {
-        return details;
     }
 
     public String getImage() {
@@ -24,6 +21,14 @@ public class Datamodel {
 
     public String getItemText() {
         return itemText;
+    }
+
+    public String getDuedate() {
+        return duedate;
+    }
+
+    public String getPublishdate() {
+        return publishdate;
     }
 
     public boolean isExpandable() {

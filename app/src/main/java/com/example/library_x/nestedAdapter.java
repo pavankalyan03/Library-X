@@ -13,11 +13,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class nestedAdapter extends RecyclerView.Adapter<nestedAdapter.nestedViewHolder> {
 
-    private final String details,duedate,publishdate;
+    private final String Bookname,duedate,publishdate;
     private final String image;
 
-    public nestedAdapter(String details,String duedate,String publishdate, String image) {
-        this.details = details;
+    public nestedAdapter(String Bookname,String duedate,String publishdate, String image) {
+        this.Bookname = Bookname;
         this.duedate = duedate;
         this.publishdate = publishdate;
         this.image = image;
@@ -33,12 +33,10 @@ public class nestedAdapter extends RecyclerView.Adapter<nestedAdapter.nestedView
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull nestedViewHolder holder, int position) {
-        holder.bookname.setText(details);
-        holder.due.setText(duedate);
-        holder.publish.setText(publishdate);
-//        holder.mImageView.setImageResource(image);
+        holder.bookname.setText(Bookname);
+        holder.due.setText("Due Date is : " + duedate);
+        holder.publish.setText("Publish Date is : " + publishdate);
         Picasso.get().load(image).into(holder.mImageView);
-
     }
 
     @Override

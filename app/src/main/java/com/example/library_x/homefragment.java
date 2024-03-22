@@ -27,17 +27,7 @@ public class homefragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Datamodel> mList;
     private ItemAdapter adapter;
-    String link,fdetails,fdue,fpublish;
-
-//    String[] books = {"Book Name: Bhagavad Gita \n\nAuthor name: Vedavyasa",
-//            "Book Name: The Alchemist \n\nAuthor name: Paulo Coelho",
-//            "Book Name: The Power of Your Subconscious Mind \n\nAuthor name: Joseph Murphy",
-//            "Book Name: The Secret \n\nAuthor name: Rhonda Byrne",
-//            "Book Name: The 5 AM Club \n\nAuthor name: Robin Sharma",
-//            "Book Name: Atomic Habits \n\nAuthor name: Jamnes clear"};
-
-//    int[] images = {R.drawable.bhagadvadgita, R.drawable.alchemist, R.drawable.powerofmind, R.drawable.secret, R.drawable.amclub, R.drawable.atomichabits};
-
+    String link, fbookname, fduedate, fpublishdate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,31 +40,33 @@ public class homefragment extends Fragment {
 
         mList = new ArrayList<>();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users");
-        String Userusername = getArguments().getString("username");
-        Query checkUserDatabase = reference.orderByChild("username").equalTo(Userusername);
+        String userUsername = getArguments().getString("username");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("users").child(userUsername).child("books");
 
-        checkUserDatabase.addValueEventListener(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                DatabaseReference books = FirebaseDatabase.getInstance().getReference().child("Userusername/Books");
-                if (dataSnapshot.exists()) {
+                mList.clear(); // Clear list before adding new data
 
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String key = snapshot.getKey();
-                        Log.d("FirebaseData", "Key: " + key);
+                for (DataSnapshot books : dataSnapshot.getChildren()) {
+                    for (DataSnapshot book : books.getChildren()) {
+                        if (book.getKey().equals("bookname")) {
+                            fbookname = book.getValue(String.class);
+                        } else if (book.getKey().equals("bookpic")) {
+                            link = book.getValue(String.class);
+                        } else if (book.getKey().equals("due")) {
+                            fduedate = book.getValue(String.class);
+                        } else if (book.getKey().equals("publish")) {
+                            fpublishdate = book.getValue(String.class);
+                        }
                     }
-                    // Data exists, log its value
-                    link = dataSnapshot.child("secret").getValue(String.class);
-                    fdetails = dataSnapshot.child("details").getValue(String.class);
-                    fbookname = dataSnapshot.child("Bookname").getValue(String.class);
-                    mList.add(new Datamodel(fdetails, link, fbookname));
-                    adapter = new ItemAdapter(mList);
-                    recyclerView.setAdapter(adapter);
-
-                } else {
-                    Log.d("FirebaseData", "No data found at the specified location");
+                    // Add data to the list inside the loop
+                    mList.add(new Datamodel(fduedate, fpublishdate, link, fbookname));
                 }
+
+                // Initialize adapter and set it to the RecyclerView after fetching data
+                adapter = new ItemAdapter(mList);
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -83,7 +75,7 @@ public class homefragment extends Fragment {
                 Log.e("FirebaseData", "Error: " + databaseError.getMessage());
             }
         });
-        
+
         return view;
     }
 

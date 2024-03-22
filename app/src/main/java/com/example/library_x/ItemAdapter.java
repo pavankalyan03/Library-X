@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder>{
 
     private List<Datamodel> mlist;
-    private String details;
+    private String Bookname,duedate,publishdate;
     private String image;
     private int expandedPosition = -1;
 
@@ -45,7 +45,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.mArrowImage.setImageResource(R.drawable.arrow_down);
         }
 
-        nestedAdapter adapter = new nestedAdapter(details, image);
+        nestedAdapter adapter = new nestedAdapter(Bookname,duedate,publishdate, image);
         holder.nestedrecyclerView.setLayoutManager(new LinearLayoutManager(holder.itemView.getContext()));
         holder.nestedrecyclerView.setHasFixedSize(true);
         holder.nestedrecyclerView.setAdapter(adapter);
@@ -59,7 +59,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
                 // Toggle the expandable state of the clicked item
                 model.setExpandable(!isExpandable);
-                details = model.getDetails();
+                Bookname = model.getItemText();
+                duedate = model.getDuedate();
+                publishdate = model.getPublishdate();
                 image = model.getImage();
 
                 // Collapse the previously expanded item (if any)

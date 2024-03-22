@@ -33,7 +33,6 @@ public class profilefragment extends Fragment {
 //        pdob.setText(ArrayListHolder.dateofbirth.get(index));
 //        ppno.setText(ArrayListHolder.phoneno.get(index));
 
-        assert getArguments() != null;
         puname.setText(getArguments().getString("username"));
         pfname.setText(getArguments().getString("name"));
         pdob.setText(getArguments().getString("dob"));
